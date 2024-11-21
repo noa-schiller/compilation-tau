@@ -33,7 +33,7 @@ import java_cup.runtime.*;
 /*******************************************************************************/
 /* Note that this has to be the EXACT same name of the class the CUP generates */
 /*******************************************************************************/
-%cupsym TokenNames
+%cupsym TokenNamesForCup
 
 /******************************************************************/
 /* CUP compatibility mode interfaces with a CUP generated parser. */
@@ -50,30 +50,30 @@ import java_cup.runtime.*;
 /* scanner actions.                                                          */  
 /*****************************************************************************/   
 %{
-	/*********************************************************************************/
-	/* Create a new java_cup.runtime.Symbol with information about the current token */
-	/*********************************************************************************/
-	private Symbol symbol(int type)               {return new Symbol(type, yyline, yycolumn);}
-	private Symbol symbol(int type, Object value) {return new Symbol(type, yyline, yycolumn, value);}
+  /*********************************************************************************/
+  /* Create a new java_cup.runtime.Symbol with information about the current token */
+  /*********************************************************************************/
+  private Symbol symbol(TokenNames type)               {return new Symbol(type.ordinal(), yyline, yycolumn);}
+  private Symbol symbol(TokenNames type, Object value) {return new Symbol(type.ordinal(), yyline, yycolumn, value);}
 
-	/*******************************************/
-	/* Enable line number extraction from main */
-	/*******************************************/
-	public int getLine() { return yyline + 1; } 
+  /*******************************************/
+  /* Enable line number extraction from main */
+  /*******************************************/
+  public int getLine() { return yyline + 1; } 
 
-	/**********************************************/
-	/* Enable token position extraction from main */
-	/**********************************************/
-	public int getTokenStartPosition() { return yycolumn + 1; } 
+  /**********************************************/
+  /* Enable token position extraction from main */
+  /**********************************************/
+  public int getTokenStartPosition() { return yycolumn + 1; } 
 %}
 
 /***********************/
 /* MACRO DECALARATIONS */
 /***********************/
-LineTerminator	= \r|\n|\r\n
-WhiteSpace		= {LineTerminator} | [ \t]
-INTEGER			= 0 | [1-9][0-9]*
-ID				= [a-z]+
+LineTerminator  = \r|\n|\r\n
+WhiteSpace    = {LineTerminator} | [ \t]
+INTEGER     = 0 | [1-9][0-9]*
+ID        = [a-z]+
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
