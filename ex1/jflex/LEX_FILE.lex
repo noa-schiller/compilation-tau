@@ -73,7 +73,7 @@ import java_cup.runtime.*;
 LineTerminator  = \r|\n|\r\n
 WhiteSpace    = {LineTerminator} | [ \t]
 INTEGER     = 0 | [1-9][0-9]*
-ID        = [a-z]+
+ID        = [a-zA-Z]\w*
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */

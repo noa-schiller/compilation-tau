@@ -1,3 +1,5 @@
+import java.text.MessageFormat;
+
 public enum TokenNames {
   /* terminals */
   EOF,
@@ -31,5 +33,14 @@ public enum TokenNames {
   NEW,
   INT,
   STRING,
-  ID,
+  ID;
+
+  public static TokenNames fromOrdinal(int ord) {
+    for (var t : TokenNames.values()) {
+      if (t.ordinal() == ord) {
+        return t;
+      }
+    }
+    throw new IllegalArgumentException(MessageFormat.format("Invalid token ordinal: {0}", ord));
+  }
 }
