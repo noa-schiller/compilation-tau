@@ -93,15 +93,38 @@ ID        = [a-z]+
 
 <YYINITIAL> {
 
-"+"					  { return symbol(TokenNames.PLUS); }
-"-"					  { return symbol(TokenNames.MINUS); }
-"PPP"				  { return symbol(TokenNames.TIMES); }
-"/"					  { return symbol(TokenNames.DIVIDE); }
-"("					  { return symbol(TokenNames.LPAREN); }
-")"					  { return symbol(TokenNames.RPAREN); }
-{INTEGER}		  { return symbol(TokenNames.NUMBER, new Integer(yytext())); }
-{ID}				  { return symbol(TokenNames.ID,     new String( yytext())); }   
-{WhiteSpace}	{ /* just skip what was found, do nothing */ }
-<<EOF>>				{ return symbol(TokenNames.EOF); }
+"nil"         { return symbol(TokenNames.NIL); }
+"+"           { return symbol(TokenNames.PLUS); }
+"-"           { return symbol(TokenNames.MINUS); }
+"*"           { return symbol(TokenNames.TIMES); }
+"/"           { return symbol(TokenNames.DIVIDE); }
+"("           { return symbol(TokenNames.LPAREN); }
+")"           { return symbol(TokenNames.RPAREN); }
+"["           { return symbol(TokenNames.LBRACK); }
+"]"           { return symbol(TokenNames.RBRACK); }
+"{"           { return symbol(TokenNames.LBRACE); }
+"}"           { return symbol(TokenNames.RBRACE); }
+","           { return symbol(TokenNames.COMMA); }
+"."           { return symbol(TokenNames.DOT); }
+";"           { return symbol(TokenNames.SEMICOLON); }
+"int"         { return symbol(TokenNames.TYPE_INT); }
+"void"        { return symbol(TokenNames.TYPE_VOID); }
+"string"      { return symbol(TokenNames.TYPE_STRING); }
+":="          { return symbol(TokenNames.ASSIGN); }
+"="           { return symbol(TokenNames.EQ); }
+"<"           { return symbol(TokenNames.LT); }
+">"           { return symbol(TokenNames.GT); }
+"array"       { return symbol(TokenNames.ARRAY); }
+"class"       { return symbol(TokenNames.CLASS); }
+"extends"     { return symbol(TokenNames.EXTENDS); }
+"return"      { return symbol(TokenNames.RETURN); }
+"while"       { return symbol(TokenNames.WHILE); }
+"if"          { return symbol(TokenNames.IF); }
+"new"         { return symbol(TokenNames.NEW); }
+{INTEGER}     { return symbol(TokenNames.INT, new Integer(yytext())); }
+/* {STRING}      { return symbol(TokenNames.STRING, new String(yytext())); } */
+{ID}          { return symbol(TokenNames.ID, new String(yytext())); }   
+{WhiteSpace}  { /* just skip what was found, do nothing */ }
+<<EOF>>       { return symbol(TokenNames.EOF); }
 
 }
