@@ -70,10 +70,16 @@ import java_cup.runtime.*;
 /***********************/
 /* MACRO DECALARATIONS */
 /***********************/
-LineTerminator  = \r|\n|\r\n
-WhiteSpace    = {LineTerminator} | [ \t]
-INTEGER     = 0 | [1-9][0-9]*
-ID        = [a-zA-Z]\w*
+LineTerminator    = \r|\n|\r\n
+CommentCharacter  = [\w \t()\[\]{}?!+\-*/.;]
+WhiteSpace        = {LineTerminator} | [ \t]
+INTEGER           = 0 | [1-9][0-9]*
+ID                = [:letter:]\w*
+
+// comments
+Comment = {TraditionalComment} | {EndOfLineComment}
+TraditionalComment   = "/*" {CommentCharacter} ~"*/" | "/*" "*"+ "/"
+EndOfLineComment     = "//" {CommentCharacter}* {LineTerminator}?
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
@@ -125,6 +131,7 @@ ID        = [a-zA-Z]\w*
 /* {STRING}      { return symbol(TokenNames.STRING, new String(yytext())); } */
 {ID}          { return symbol(TokenNames.ID, new String(yytext())); }   
 {WhiteSpace}  { /* just skip what was found, do nothing */ }
+{Comment}     { /* skip */ }
 <<EOF>>       { return symbol(TokenNames.EOF); }
 
 }
