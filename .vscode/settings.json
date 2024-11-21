@@ -1,0 +1,6 @@
+{
+  "java.project.referencedLibraries": [
+    "lib/**/*.jar",
+    "ex1/external_jars/java-cup-11b.jar"
+  ]
+}
