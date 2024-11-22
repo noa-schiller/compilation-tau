@@ -72,13 +72,14 @@ import java_cup.runtime.*;
 /***********************/
 LineTerminator    = \r|\n|\r\n
 CommentCharacter  = [\w \t()\[\]{}?!+\-*/.;]
-WhiteSpace        = {LineTerminator} | [ \t]
-INTEGER           = 0 | [1-9][0-9]*
-ID                = [:letter:]\w*
+WhiteSpace        = \s
+Integer           = 0 | [1-9][0-9]*
+String            = "\"" [:letter:]* "\""
+Identifier        = [:letter:]\w*
 
 // comments
 Comment = {TraditionalComment} | {EndOfLineComment}
-TraditionalComment   = "/*" {CommentCharacter} ~"*/" | "/*" "*"+ "/"
+TraditionalComment   = "/*" {CommentCharacter}* "*/"
 EndOfLineComment     = "//" {CommentCharacter}* {LineTerminator}?
 
 /******************************/
@@ -127,9 +128,9 @@ EndOfLineComment     = "//" {CommentCharacter}* {LineTerminator}?
 "while"       { return symbol(TokenNames.WHILE); }
 "if"          { return symbol(TokenNames.IF); }
 "new"         { return symbol(TokenNames.NEW); }
-{INTEGER}     { return symbol(TokenNames.INT, new Integer(yytext())); }
-/* {STRING}      { return symbol(TokenNames.STRING, new String(yytext())); } */
-{ID}          { return symbol(TokenNames.ID, new String(yytext())); }   
+{Integer}     { return symbol(TokenNames.INT, new Integer(yytext())); }
+{String}      { return symbol(TokenNames.STRING, new String(yytext())); }
+{Identifier}  { return symbol(TokenNames.ID, new String(yytext())); }   
 {WhiteSpace}  { /* just skip what was found, do nothing */ }
 {Comment}     { /* skip */ }
 <<EOF>>       { return symbol(TokenNames.EOF); }
