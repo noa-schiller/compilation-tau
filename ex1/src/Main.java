@@ -1,7 +1,7 @@
-import java_cup.runtime.Symbol;
-
-import java.io.*;
+import java.io.FileReader;
 import java.io.PrintWriter;
+
+import java_cup.runtime.Symbol;
 
 public class Main {
     static public void main(String[] argv) {
@@ -44,19 +44,19 @@ public class Main {
         }
     }
 
-    private static void printToken(PrintWriter stream, Symbol s, int line, int position) {
+    private static void printToken(PrintWriter writer, Symbol s, int line, int col) {
         TokenNames tokenName = TokenNames.fromOrdinal(s.sym);
-        stream.print(tokenName);
+        writer.print(tokenName);
         if (s.value != null) {
-            stream.print("(");
-            stream.print(s.value);
-            stream.print(")");
+            writer.print("(");
+            writer.print(s.value);
+            writer.print(")");
         }
-        stream.print("[");
-        stream.print(line);
-        stream.print(",");
-        stream.print(position);
-        stream.print("]");
-        stream.println();
+        writer.print("[");
+        writer.print(line);
+        writer.print(",");
+        writer.print(col);
+        writer.print("]");
+        writer.println();
     }
 }
