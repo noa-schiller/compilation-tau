@@ -71,16 +71,16 @@ import java_cup.runtime.*;
 /* MACRO DECALARATIONS */
 /***********************/
 LineTerminator    = \r|\n|\r\n
-CommentCharacter  = [\w \t()\[\]{}?!+\-*/.;]
+CommentChar       = [\w \t()\[\]{}?!+\-.;*/]
 WhiteSpace        = \s
 Integer           = 0 | [1-9][0-9]*
 String            = "\"" [:letter:]* "\""
 Identifier        = [:letter:]\w*
 
 // comments
-Comment = {TraditionalComment} | {EndOfLineComment}
-TraditionalComment   = "/*" {CommentCharacter}* "*/"
-EndOfLineComment     = "//" {CommentCharacter}* {LineTerminator}?
+Comment           = {Comment1} | {Comment2}
+Comment2          = "/*" ([{CommentChar}--[*]] | "*"+ [{CommentChar}--[*/]])* "*"* "*/"
+Comment1          = "//" {CommentChar}* {LineTerminator}?
 
 /******************************/
 /* DOLAR DOLAR - DON'T TOUCH! */
