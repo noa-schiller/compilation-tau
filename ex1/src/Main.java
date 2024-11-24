@@ -10,16 +10,16 @@ public class Main {
 
         try {
             // [1] Initialize a file reader
-            var file_reader = new FileReader(inputFilename);
+            FileReader file_reader = new FileReader(inputFilename);
 
             // [2] Initialize a file writer
-            var file_writer = new PrintWriter(outputFilename);
+            PrintWriter file_writer = new PrintWriter(outputFilename);
 
             // [3] Initialize a new lexer
-            var l = new Lexer(file_reader);
+            Lexer l = new Lexer(file_reader);
 
             // [4] Read next token
-            var s = l.next_token();
+            Symbol s = l.next_token();
 
             // [5] Main reading tokens loop
             while (s.sym != TokenNames.EOF.ordinal()) {

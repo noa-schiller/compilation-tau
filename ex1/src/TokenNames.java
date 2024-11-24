@@ -36,7 +36,7 @@ public enum TokenNames {
   ID;
 
   public static TokenNames fromOrdinal(int ord) {
-    for (var t : TokenNames.values()) {
+    for (TokenNames t : TokenNames.values()) {
       if (t.ordinal() == ord) {
         return t;
       }
