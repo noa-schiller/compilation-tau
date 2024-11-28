@@ -1,5 +1,7 @@
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.MessageFormat;
 
 import java_cup.runtime.Symbol;
 
@@ -8,55 +10,35 @@ public class Main {
         String inputFilename = argv[0];
         String outputFilename = argv[1];
 
-        try {
-            // [1] Initialize a file reader
-            FileReader file_reader = new FileReader(inputFilename);
+        try (FileReader file_reader = new FileReader(inputFilename);
+                PrintWriter file_writer = new PrintWriter(outputFilename);) {
 
-            // [2] Initialize a file writer
-            PrintWriter file_writer = new PrintWriter(outputFilename);
-
-            // [3] Initialize a new lexer
+            StringBuilder output = new StringBuilder();
             Lexer l = new Lexer(file_reader);
-
-            // [4] Read next token
-            Symbol s = l.next_token();
-
-            // [5] Main reading tokens loop
-            while (s.sym != TokenNames.EOF.ordinal()) {
-                // [6] Print to console
-                printToken(new PrintWriter(System.out, true), s, l.getLine(), l.getTokenStartPosition());
-
-                // [7] Print to file
-                printToken(file_writer, s, l.getLine(), l.getTokenStartPosition());
-
-                // [8] Read next token
-                s = l.next_token();
+            try {
+                Symbol s = l.next_token();
+                while (s.sym != TokenNames.EOF.ordinal()) {
+                    appendToken(System.out, s, l.getLine(), l.getTokenStartPosition());
+                    appendToken(output, s, l.getLine(), l.getTokenStartPosition());
+                    s = l.next_token();
+                }
+            } catch (Error e) {
+                file_writer.println("ERROR");
+                return;
+            } finally {
+                l.yyclose();
             }
-
-            // [9] Close lexer input file
-            l.yyclose();
-
-            // [10] Close output file
-            file_writer.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            file_writer.print(output.toString());
+        } catch (IOException ex) {
+            System.err.print(ex.getMessage());
         }
     }
 
-    private static void printToken(PrintWriter writer, Symbol s, int line, int col) {
-        TokenNames tokenName = TokenNames.fromOrdinal(s.sym);
-        writer.print(tokenName);
+    private static void appendToken(Appendable a, Symbol s, int line, int col) throws IOException {
+        a.append(TokenNames.fromOrdinal(s.sym).toString());
         if (s.value != null) {
-            writer.print("(");
-            writer.print(s.value);
-            writer.print(")");
+            a.append(MessageFormat.format("({0})", s.value));
         }
-        writer.print("[");
-        writer.print(line);
-        writer.print(",");
-        writer.print(col);
-        writer.print("]");
-        writer.println();
+        a.append(MessageFormat.format("[{0},{1}]\n", line, col));
     }
 }
