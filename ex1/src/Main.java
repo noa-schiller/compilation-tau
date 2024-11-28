@@ -23,14 +23,15 @@ public class Main {
                     s = l.next_token();
                 }
             } catch (Error e) {
+                System.err.println(e.getMessage());
                 file_writer.println("ERROR");
                 return;
             } finally {
                 l.yyclose();
             }
             file_writer.print(output.toString());
-        } catch (IOException ex) {
-            System.err.print(ex.getMessage());
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
     }
 

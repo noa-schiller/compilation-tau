@@ -5,6 +5,7 @@
 /*************/
 /* USER CODE */
 /*************/
+import java.text.MessageFormat;
 import java_cup.runtime.*;
 
 /******************************/
@@ -128,7 +129,18 @@ CommentChar       = [\w\s()\[\]{}?!+\-*/.;]
 "while"       { return symbol(TokenNames.WHILE); }
 "if"          { return symbol(TokenNames.IF); }
 "new"         { return symbol(TokenNames.NEW); }
-{Integer}     { return symbol(TokenNames.INT, new Integer(yytext())); }
+{Integer}     { 
+                try {
+                  int value = Integer.parseInt(yytext());
+                  if (0 <= value && value < 32768) {
+                    return symbol(TokenNames.INT, value); 
+                  } else {
+                    throw new Error(MessageFormat.format("Integer out of allowed range: {0}", value));
+                  }
+                } catch (NumberFormatException e) {
+                  throw new Error(e);
+                }
+              }
 {String}      { return symbol(TokenNames.STRING, new String(yytext())); }
 {Identifier}  { return symbol(TokenNames.ID, new String(yytext())); }   
 {WhiteSpace}  { /* just skip what was found, do nothing */ }
